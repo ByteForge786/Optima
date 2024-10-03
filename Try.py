@@ -1,6 +1,6 @@
 import snowflake.connector
 import pandas as pd
-from typing import Dict, Any
+from typing import Dict, Any, List
 from langchain.llms import BaseLLM
 from langchain.agents import ZeroShotAgent
 from langchain.prompts import PromptTemplate
@@ -28,8 +28,9 @@ class SnowflakeCortexLLM(BaseLLM):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     
-    def _call(self, prompt: str) -> str:
-        return cortex_inference(prompt)
+    def generate(self, prompts: List[str]) -> List[str]:
+        # Call cortex_inference for each prompt and return the results
+        return [cortex_inference(prompt) for prompt in prompts]
 
     @property
     def _identifying_params(self) -> Dict[str, Any]:
